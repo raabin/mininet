@@ -168,23 +168,18 @@ function mn_deps {
         $install ${PYPKG}-pyflakes pylint ${PYPKG}-pep8-naming \
             ${PYPKG}-pexpect
     elif [ "$DIST" = "SUSE LINUX"  ]; then
-        echo "inside suse linux"
 		$install gcc make socat psmisc xterm openssh iperf \
 			iproute telnet ${PYPKG}-setuptools libcgroup-tools \
 			ethtool help2man python-pyflakes python3-pylint \
                         python-pep8 ${PYPKG}-pexpect ${PYPKG}-tk
     else  # Debian/Ubuntu
-        echo "Inside Debian/Ubuntu"
         pf=python3-pyflakes
         pep8=python3-pep8
-        echo "After pyflakes/pep8"
         $install gcc make socat psmisc xterm ssh iperf telnet \
                  ethtool help2man python3-pyflakes pylint python3-pep8 \
                  net-tools ${PYPKG}-tk
-        echo "After net-tools"
         # Install pip
         $install ${PYPKG}-pip || $install ${PYPKG}-pip-whl
-        echo "After pip install"
         if ! ${PYTHON} -m pip -V; then
             if [ $PYTHON_VERSION == 2 ]; then
                 wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
@@ -194,19 +189,14 @@ function mn_deps {
             sudo ${PYTHON} get-pip.py
             rm get-pip.py
         fi
-       ${python} -m pip install pexpect
-        echo "After pexpect install"
+        ${python} -m pip install pexpect
         $install iproute2 || $install iproute
-        echo "After iproute2 install"
         $install cgroup-tools || $install cgroup-bin
-        echo "After cgroup-tools install"
         $install cgroupfs-mount
-        echo "After cgroupfs-mount install"
 
     echo "Installing Mininet core"
     pushd $MININET_DIR/mininet
     sudo PYTHON=${PYTHON} make install
-    echo "After Mininet core install"
     popd
 }
 
@@ -530,7 +520,7 @@ function ryu {
     # install ryu
     sudo pip install -r tools/pip-requires -r tools/optional-requires \
         -r tools/test-requires
-    sudo python setup.py install
+    sudo /home/rp5dm/work/OpenSource/fleet/.venv/bin/python setup.py install
 
     # Add symbolic link to /usr/bin
     sudo ln -s ./bin/ryu-manager /usr/local/bin/ryu-manager
